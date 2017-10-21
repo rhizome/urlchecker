@@ -1,0 +1,17 @@
+config:
+  config_directory: .
+  url_file: urlcheck.list
+  mail_from: "CHANGE_ME"
+  mail_to: "CHANGE_ME"
+  smtp_server: smtp.example.invalid
+  domain: example.invalid
+urls: [
+  { 
+    url: "https://www.google.com",
+    code: 200
+  },
+  { 
+    url: "https://www.yahoo.com",
+    code: 200
+  }
+]
