@@ -34,7 +34,7 @@ Add it as a cron job
 $ crontab -e 
 
 # */5 * * * * ${HOME}/bin/urlcheck.rb 
-
+```
 Tested under Ruby 2.3 so far
 
 ### Contribution guidelines ###
