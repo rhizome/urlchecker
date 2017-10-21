@@ -4,6 +4,7 @@ urlcheck.rb - Check a list of URLs and send email about it.
 
 ### How do I get set up? ###
 
+* Ruby 1.9+
 * Requires the [Curb](https://github.com/taf2/curb) gem
 * Copy urlcheck.yml-sample to urlcheck.yml with your own values
 * URL list is a YAML array with the url and the response code you expect. 
@@ -34,8 +35,6 @@ Add it as a cron job
 $ crontab -e 
 
 # */5 * * * * ${HOME}/bin/urlcheck.rb 
-
-Tested under Ruby 2.3 so far
 
 ### Contribution guidelines ###
 
