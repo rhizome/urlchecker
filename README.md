@@ -35,6 +35,7 @@ Add it as a cron job
 $ crontab -e 
 
 # */5 * * * * ${HOME}/bin/urlcheck.rb 
+```
 
 ### Contribution guidelines ###
 
