@@ -1,6 +1,7 @@
 config:
   config_directory: .
-  url_file: urlcheck.list
+  url_file: urlcheck.list       # use full path
+  status_file: urlcheck.status  # use full path
   mail_from: "CHANGE_ME"
   mail_to: "CHANGE_ME"
   smtp_server: smtp.example.invalid
