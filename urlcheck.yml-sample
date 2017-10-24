@@ -1,4 +1,4 @@
-config:
+settings:
   status_file: urlcheck.status  # use full path
   mail_from: "CHANGE_ME"
   mail_to: "CHANGE_ME"

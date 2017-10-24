@@ -36,15 +36,16 @@ end
 
 # urlcheck.list in same dir by default
 begin
-  CONFIGFILE  = YAML.load_file(options[:config_file] || './urlcheck.yml')
+  config_file = options[:config_file] && File.exists?(options[:config_file] ? options[:config_file] : './urlcheck.yml'
+  config  = YAML.load_file(config_file)
 rescue Errno::ENOENT => e
   puts "Could not find config file"
   exit
 end
 
-@config       = CONFIGFILE["config"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
-urls          = CONFIGFILE["urls"]
-@status_file  = @config[:status_file] || 'urlcheck.status'
+@settings     = config["settings"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
+urls          = config["urls"]
+@status_file  = @settings[:status_file] || './urlcheck.status'
 @dirty        = false
 
 def process_urls(urllist)
@@ -135,10 +136,10 @@ def mail_message(message)
 end
 
 def send_message(message)
-  mailfrom    = @config[:mail_from]    || ENV['USER']
-  mailto      = @config[:mail_to]      || mailfrom
-  smtp_server = @config[:smtp_server]
-  domain      = @config[:domain]
+  mailfrom    = @settings[:mail_from]    || ENV['USER']
+  mailto      = @settings[:mail_to]      || mailfrom
+  smtp_server = @settings[:smtp_server]
+  domain      = @settings[:domain]
 
   if smtp_server && domain
     smtp = Net::SMTP.new(smtp_server, 25)
