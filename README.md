@@ -37,7 +37,7 @@ $ crontab -e
 
 ### Options ###
 ```bash
--c --config_file     Path to YAML config file
+-c --config_file     Path to YAML config file (default: ./urlcheck.yml)
 ```
 
 ### Contribution guidelines ###
