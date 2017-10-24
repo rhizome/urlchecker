@@ -36,7 +36,7 @@ end
 
 # urlcheck.list in same dir by default
 begin
-  config_file = (options[:config_file] && File.exists?(options[:config_file])) ? options[:config_file] : './urlcheck.yml'
+  config_file = (options[:config_file] && File.exists?(options[:config_file])) ? options[:config_file] : "#{File.dirname(__FILE__)}/urlcheck.yml"
   config      = YAML.load_file(config_file)
 rescue Errno::ENOENT => e
   puts "Could not find config file"
