@@ -10,6 +10,7 @@
 require 'optparse'
 require 'yaml'
 require 'uri'
+require 'time'
 require 'net/smtp'
 if Gem::Specification::find_all_by_name('curb').any?
   require 'curb'
@@ -41,48 +42,47 @@ rescue Errno::ENOENT => e
   exit
 end
 
-@config     = CONFIGFILE["config"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
-urls        = CONFIGFILE["urls"]
-@dirty      = false
+@config       = CONFIGFILE["config"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
+urls          = CONFIGFILE["urls"]
+@status_file  = @config[:status_file] || 'urlcheck.status'
+@dirty        = false
 
 def process_urls(urllist)
-  responses = {}
-
-  urllist.each do |line|
-
-    url   = line["url"]
-    code  = line["code"]
-
-    begin
-      ret = Curl.get(URI.encode(url))
-      if code.to_i == ret.response_code 
-        responses[url] = "OK"
-      else
-        # Code was different than expected
-        responses[url] = "CODE_MISMATCH"
-        @dirty = true
-      end
-    rescue Curl::Err::SSLPeerCertificateError => e
-      if code.to_i == 000
-        # 000 is Curl's "server's up, but not responding on SSL"
-        responses[url] = "NOSSL EXPECTED"
-      else
-        # SSL was expected at this URL
-        responses[url] = "SSLFAIL"
-        @dirty = true
-      end
-    rescue Curl::Err::HostResolutionError => e
-      puts "ERROR: #{url}: #{e}"
-    rescue Curl::Err::ConnectionFailedError => e
-      puts "ERROR: Could not connect: #{e}"
-    end
+  urllist.each_with_object({}) do |line, coll|
+    coll[line["url"]] = response_for(line["url"], line["code"])
   end
-  responses
+end
+
+def response_for(url, code)
+  status = ''
+  begin
+    ret = Curl.get(URI.encode(url))
+    if ret.response_code && ret.response_code == code.to_i
+      status = "OK"
+    else
+      # Code was different than expected
+      status = "CODE_MISMATCH"
+      @dirty = false
+    end
+  rescue Curl::Err::SSLPeerCertificateError => e
+    if code.to_i == 000
+      # 000 is Curl's "server's up, but not responding on SSL"
+      status = "NOSSL EXPECTED"
+    else
+      # SSL was expected at this URL
+      status = "SSLFAIL"
+      @dirty = false
+    end
+  rescue Curl::Err::HostResolutionError => e
+    puts "ERROR: #{url}: #{e}"
+  rescue Curl::Err::ConnectionFailedError => e
+    puts "ERROR: Could not connect: #{e}"
+  end
+  status
 end
 
 def compose_email(responses)
   if responses.any?
-
     padding = responses.keys.max_by(&:length).length + 3
     msg   = "Subject: urlcheck #{(@dirty ? "FAILURES" : "OK")}\n\n"
 
@@ -99,7 +99,45 @@ def compose_email(responses)
   msg
 end
 
+def current_status
+  status = ''
+  if File.exists?(@status_file)
+    f = File.open(@status_file, 'r')
+    status = f.first
+    f.close
+  end
+  status
+end
+
+def set_status
+  if f = File.open(@status_file, 'w', 0600)
+    f.write(@dirty ? "FAIL" : "OK")
+    f.close
+    return true
+  else
+    return false
+  end
+end
+
+def send_marker?(t = Time.now)
+  if (t.to_i > t.to_i - 300) && (t.to_i < t.to_i + 300)
+    puts "marker not sent"
+    return false
+  else
+    puts "marker sent"
+    return true
+  end
+end
+
 def mail_message(message)
+  if current_status == "OK" && !send_marker?
+    puts "Status unchanged, no mail sent"
+  else
+    send_message(message)
+  end
+end
+
+def send_message(message)
   mailfrom    = @config[:mail_from]    || ENV['USER']
   mailto      = @config[:mail_to]      || mailfrom
   smtp_server = @config[:smtp_server]
@@ -119,5 +157,6 @@ def mail_message(message)
 end
 
 result  = process_urls(urls)
+set_status
 msg     = compose_email(result)
 mail_message(msg)
