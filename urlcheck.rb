@@ -22,7 +22,7 @@ end
 options = {}
 optparser = OptionParser.new do |opts|
   opts.banner = "Usage: urlcheck.rb [options]"
-  opts.on("-f", "--config_file FILE", "Path to YAML config file") do |option|
+  opts.on("-c", "--config_file FILE", "Path to YAML config file") do |option|
       options[:config_file] = option
   end
 end
