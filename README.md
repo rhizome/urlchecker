@@ -28,14 +28,14 @@ urls: [
 ]
 ```
 
-###Cron job
+### Cron job ###
 ```bash
 $ crontab -e 
 
 # */5 * * * * ${HOME}/bin/urlcheck.rb 
 ```
 
-###Options
+### Options ###
 ```bash
 -c --config_file     Path to YAML config file
 ```
