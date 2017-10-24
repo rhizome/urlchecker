@@ -127,11 +127,7 @@ def send_marker?(t = Time.now)
 end
 
 def mail_message(message)
-  if current_status == "OK" && !send_marker?
-    # puts "Status unchanged, no mail sent"
-  else
-    send_message(message)
-  end
+  send_message(message) if (current_status == "OK" && !send_marker?)
 end
 
 def send_message(message)
