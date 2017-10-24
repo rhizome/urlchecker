@@ -110,12 +110,9 @@ def current_status
 end
 
 def set_status
-  if f = File.open(@status_file, 'w', 0600)
+  File.open(@status_file, 'w', 0600) do |f|
     f.write(@dirty ? "FAIL" : "OK")
     f.close
-    return true
-  else
-    return false
   end
 end
 
