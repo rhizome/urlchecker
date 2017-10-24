@@ -12,7 +12,6 @@ urlcheck.rb - Check a list of URLs and send email about it.
 All of the possible options are listed in urlcheck.yml-sample:
 ```yaml
 config:
-  url_file: urlcheck.list
   mail_from: "CHANGE_ME"
   mail_to: "CHANGE_ME"
   smtp_server: smtp.example.invalid
