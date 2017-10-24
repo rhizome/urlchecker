@@ -20,7 +20,7 @@ urls: [
   { 
     url: "https://www.google.com",
     code: 200
-  },
+  }, # remember your commas!
   { 
     url: "https://www.yahoo.com",
     code: 200
