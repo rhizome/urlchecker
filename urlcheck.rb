@@ -19,7 +19,7 @@ else
   exit
 end
 
-options = {}
+options   = {}
 optparser = OptionParser.new do |opts|
   opts.banner = "Usage: urlcheck.rb [options]"
   opts.on("-c", "--config_file FILE", "Path to YAML config file") do |option|
@@ -36,13 +36,12 @@ end
 
 # urlcheck.list in same dir by default
 begin
-  config_file = (options[:config_file] && File.exists?(options[:config_file]) ? options[:config_file] : './urlcheck.yml'
-  config  = YAML.load_file(config_file)
+  config_file = (options[:config_file] && File.exists?(options[:config_file])) ? options[:config_file] : './urlcheck.yml'
+  config      = YAML.load_file(config_file)
 rescue Errno::ENOENT => e
   puts "Could not find config file"
   exit
 end
-
 @settings     = config["settings"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
 urls          = config["urls"]
 @status_file  = @settings[:status_file] || './urlcheck.status'
