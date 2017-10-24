@@ -128,7 +128,7 @@ end
 
 def mail_message(message)
   if current_status == "OK" && !send_marker?
-    puts "Status unchanged, no mail sent"
+    # puts "Status unchanged, no mail sent"
   else
     send_message(message)
   end
