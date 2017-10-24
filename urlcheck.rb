@@ -118,10 +118,10 @@ end
 
 def send_marker?(t = Time.now)
   if (t.to_i > t.to_i - 300) && (t.to_i < t.to_i + 300)
-    puts "marker not sent"
+    # puts "marker not sent"
     return false
   else
-    puts "marker sent"
+    # puts "marker sent"
     return true
   end
 end
