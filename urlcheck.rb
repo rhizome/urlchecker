@@ -126,7 +126,7 @@ end
 
 def outside_marker_window?(time)
   min = time.to_a[1]
-  (min > 5 && min < 55)
+  (min >= 5 && min <= 55)
 end
 
 def mail_message(message)
