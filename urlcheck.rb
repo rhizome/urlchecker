@@ -116,18 +116,21 @@ def set_status
   end
 end
 
-def send_marker?(t = Time.now)
-  if (t.to_i > t.to_i - 300) && (t.to_i < t.to_i + 300)
-    # puts "marker not sent"
+def send_mail?
+  if (current_status == "OK" && outside_marker_window?(Time.now))
     return false
   else
-    # puts "marker sent"
     return true
   end
 end
 
+def outside_marker_window?(time)
+  min = time.to_a[1]
+  (min > 5 && min < 55)
+end
+
 def mail_message(message)
-  send_message(message) if (current_status == "OK" && !send_marker?)
+  send_message(message) if send_mail?
 end
 
 def send_message(message)
