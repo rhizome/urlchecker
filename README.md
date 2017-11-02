@@ -16,16 +16,11 @@ settings:
   mail_to: "CHANGE_ME"
   smtp_server: smtp.example.invalid
   domain: example.invalid
-urls: [
-  { 
-    url: "https://www.google.com",
+urls:
+  - url: "https://www.google.com"
     code: 200
-  }, # remember your commas!
-  { 
-    url: "https://www.yahoo.com",
+  - url: "https://www.yahoo.com",
     code: 200
-  }
-]
 ```
 
 ### Cron job ###
