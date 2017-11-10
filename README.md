@@ -38,6 +38,8 @@ $ crontab -e
 ### Options ###
 ```bash
 -c --config_file     Path to YAML config file (default: ./urlcheck.yml)
+-m --markers         Send a marker email every hour
+-d --debug           Always send email
 ```
 
 ### Contribution guidelines ###

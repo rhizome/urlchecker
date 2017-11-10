@@ -23,7 +23,13 @@ options   = {}
 optparser = OptionParser.new do |opts|
   opts.banner = "Usage: urlcheck.rb [options]"
   opts.on("-c", "--config_file FILE", "Path to YAML config file") do |option|
-      options[:config_file] = option
+    options[:config_file] = option
+  end
+  opts.on("-m", "--markers", "Send marker emails every hour") do |option|
+    options[:marker]      = true
+  end
+  opts.on("-d", "--debug", "Always send mail") do |option|
+    options[:debug]       = true
   end
 end
 
@@ -42,6 +48,8 @@ rescue Errno::ENOENT => e
   puts "Could not find config file"
   exit
 end
+@marker       = options[:marker]
+@debug        = options[:debug]
 @settings     = config["settings"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
 urls          = config["urls"]
 @status_file  = @settings[:status_file] || './urlcheck.status'
@@ -62,7 +70,7 @@ def response_for(url, code)
     else
       # Code was different than expected
       status = "CODE_MISMATCH"
-      @dirty = false
+      @dirty = true
     end
   rescue Curl::Err::SSLPeerCertificateError => e
     if code.to_i == 000
@@ -71,7 +79,7 @@ def response_for(url, code)
     else
       # SSL was expected at this URL
       status = "SSLFAIL"
-      @dirty = false
+      @dirty = true
     end
   rescue Curl::Err::HostResolutionError => e
     puts "ERROR: #{url}: #{e}"
@@ -117,16 +125,12 @@ def set_status
 end
 
 def send_mail?
-  if (current_status == "OK" && outside_marker_window?(Time.now))
-    return false
-  else
-    return true
-  end
+  @debug || @dirty || send_markers?
 end
 
-def outside_marker_window?(time)
+def send_markers?(time = Time.now)
   min = time.to_a[1]
-  (min >= 5 && min <= 55)
+  @markers && (min < 5 || (min > 55 && min < 60))
 end
 
 def mail_message(message)
