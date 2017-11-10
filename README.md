@@ -32,6 +32,7 @@ $ crontab -e
 ```
 
 ### Options ###
+By default, no email is sent when checks are successful.
 ```bash
 -c --config_file     Path to YAML config file (default: ./urlcheck.yml)
 -m --markers         Send a marker email every hour
