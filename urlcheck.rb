@@ -22,6 +22,7 @@ end
 options   = {}
 optparser = OptionParser.new do |opts|
   opts.banner = "Usage: urlcheck.rb [options]"
+  opts.separator ""
   opts.on("-c", "--config_file FILE", "Path to YAML config file") do |option|
     options[:config_file] = option
   end
@@ -34,6 +35,7 @@ optparser = OptionParser.new do |opts|
   opts.on("-d", "--debug", "Always send mail") do
     options[:debug]       = true
   end
+  opts.separator ""
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
     exit

@@ -39,6 +39,9 @@ By default, no email is sent when checks are successful.
 -c --config_file     Path to YAML config file (default: ./urlcheck.yml)
 -m --markers         Send a marker email every hour, regardless of status
 -d --debug           Always send email
+-s --status          Return the current status to the command prompt
+
+-h --help            Display this message
 ```
 
 ### Contribution guidelines ###
