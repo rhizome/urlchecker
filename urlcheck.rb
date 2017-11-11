@@ -60,8 +60,8 @@ end
 @settings     = config["settings"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
 urls          = config["urls"]
 @status_file  = @settings[:status_file] || './urlcheck.status'
-@markers      = options[:markers]       || @settings[:markers]
-@debug        = options[:debug]         || @settings[:debug]
+@markers      = options[:markers]       || @settings[:markers] || false
+@debug        = options[:debug]         || @settings[:debug]   || false
 @get_status   = options[:status]
 @dirty        = false
 
