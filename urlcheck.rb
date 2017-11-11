@@ -141,10 +141,10 @@ def get_status
 end
 
 def send_mail?
-  @debug || @dirty || send_markers?
+  @debug || @dirty || send_marker?
 end
 
-def send_markers?(time = Time.now)
+def send_marker?(time = Time.now)
   min = time.to_a[1]
   @markers && (min < 5 || (min > 55 && min < 60))
 end
