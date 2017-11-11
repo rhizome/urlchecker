@@ -4,6 +4,8 @@ settings:
   mail_to: "CHANGE_ME"
   smtp_server: smtp.example.invalid
   domain: example.invalid
+  markers: false
+  debug: false
 urls:
   - url: "https://www.google.com"
     code: 200

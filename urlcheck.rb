@@ -26,7 +26,7 @@ optparser = OptionParser.new do |opts|
     options[:config_file] = option
   end
   opts.on("-m", "--markers", "Send marker emails every hour") do |option|
-    options[:marker]      = true
+    options[:markers]     = true
   end
   opts.on("-d", "--debug", "Always send mail") do |option|
     options[:debug]       = true
@@ -48,11 +48,11 @@ rescue Errno::ENOENT => e
   puts "Could not find config file"
   exit
 end
-@marker       = options[:marker]
-@debug        = options[:debug]
 @settings     = config["settings"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
 urls          = config["urls"]
 @status_file  = @settings[:status_file] || './urlcheck.status'
+@markers      = options[:markers]       || @settings[:markers]
+@debug        = options[:debug]         || @settings[:debug]
 @dirty        = false
 
 def process_urls(urllist)
