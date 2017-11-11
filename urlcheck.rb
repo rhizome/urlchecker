@@ -104,7 +104,7 @@ end
 def compose_email(responses)
   if responses.any?
     padding = responses.keys.max_by(&:length).length + 3
-    msg   = "Subject: urlcheck #{(@dirty ? "FAILURES" : "OK")}\n\n"
+    msg   = "Subject: urlcheck #{get_status}\n\n"
 
     responses.each do |url,status|
       # add a space after url so Thunderbird doesn't 
@@ -131,9 +131,13 @@ end
 
 def set_status
   File.open(@status_file, 'w', 0600) do |f|
-    f.write(@dirty ? "FAIL" : "OK")
+    f.write(get_status)
     f.close
   end
+end
+
+def get_status
+  @dirty ? "FAIL" : "OK"
 end
 
 def send_mail?
@@ -168,11 +172,12 @@ def send_message(message)
 
 end
 
+result = process_urls(urls)
+set_status
 if @get_status
   puts current_status
+  exit
 else
-  result  = process_urls(urls)
-  set_status
-  msg     = compose_email(result)
+  msg = compose_email(result)
   mail_message(msg)
 end
