@@ -25,10 +25,13 @@ optparser = OptionParser.new do |opts|
   opts.on("-c", "--config_file FILE", "Path to YAML config file") do |option|
     options[:config_file] = option
   end
-  opts.on("-m", "--markers", "Send marker emails every hour") do |option|
+  opts.on("-m", "--markers", "Send marker emails every hour") do
     options[:markers]     = true
   end
-  opts.on("-d", "--debug", "Always send mail") do |option|
+  opts.on("-s", "--status", "Outputs OK or FAIL, does not send mail") do
+    options[:status]      = true
+  end
+  opts.on("-d", "--debug", "Always send mail") do
     options[:debug]       = true
   end
   opts.on_tail("-h", "--help", "Show this message") do
@@ -57,6 +60,7 @@ urls          = config["urls"]
 @status_file  = @settings[:status_file] || './urlcheck.status'
 @markers      = options[:markers]       || @settings[:markers]
 @debug        = options[:debug]         || @settings[:debug]
+@get_status   = options[:status]
 @dirty        = false
 
 def process_urls(urllist)
@@ -160,7 +164,11 @@ def send_message(message)
 
 end
 
-result  = process_urls(urls)
-set_status
-msg     = compose_email(result)
-mail_message(msg)
+if @get_status
+  puts current_status
+else
+  result  = process_urls(urls)
+  set_status
+  msg     = compose_email(result)
+  mail_message(msg)
+end
