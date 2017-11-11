@@ -92,9 +92,9 @@ def response_for(url, code)
       @dirty = true
     end
   rescue Curl::Err::HostResolutionError => e
-    puts "ERROR: #{url}: #{e}"
+    @dirty = true
   rescue Curl::Err::ConnectionFailedError => e
-    puts "ERROR: Could not connect: #{e}"
+    @dirty = true
   end
   status
 end
