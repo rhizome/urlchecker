@@ -31,6 +31,10 @@ optparser = OptionParser.new do |opts|
   opts.on("-d", "--debug", "Always send mail") do |option|
     options[:debug]       = true
   end
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
 end
 
 begin
