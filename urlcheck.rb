@@ -97,6 +97,9 @@ def response_for(url, code)
   rescue Curl::Err::ConnectionFailedError => e
     status = "#{e}"
     @dirty = true
+  rescue Curl::Err::SSLCACertificateError => e
+    status = "#{e}"
+    @dirty = true
   end
   status
 end

@@ -36,12 +36,15 @@ $ crontab -e
 ### Options ###
 By default, no email is sent when checks are successful. 
 ```bash
--c --config_file     Path to YAML config file (default: ./urlcheck.yml)
--m --markers         Send a marker email every hour, regardless of status
--d --debug           Always send email
--s --status          Return the current status to the command prompt
+Usage: urlcheck.rb [options]
 
--h --help            Display this message
+    -c, --config_file FILE           Path to YAML config file
+    -m, --markers                    Send marker emails every hour
+    -s, --status                     Outputs OK or FAIL, does not send mail
+    -d, --debug                      Always send mail
+
+    -h, --help                       Show this message
+
 ```
 
 ### Contribution guidelines ###
