@@ -3,7 +3,7 @@
 #title           :urlcheck.rb
 #description     :check a list of urls
 #author          :eric@many9s.com
-#version         :0.1
+#version         :0.2
 #usage           :ruby urlcheck.rb
 #notes           :requires curl
 #==============================================================================
@@ -74,12 +74,14 @@ end
 def response_for(url, code)
   status = ''
   begin
-    ret = Curl.get(URI.encode(url))
+    ret = Curl.get(URI.encode(url)) do |client|
+      client.headers['User-Agent'] = 'Many9s Monitor - urlchecker 0.2'
+    end
     if ret.response_code && ret.response_code == code.to_i
       status = "OK"
     else
       # Code was different than expected
-      status = "CODE_MISMATCH"
+      status = "CODE_MISMATCH (got: #{ret.response_code} : want: #{code})"
       @dirty = true
     end
   rescue Curl::Err::SSLPeerCertificateError => e
@@ -172,7 +174,6 @@ def send_message(message)
     puts "You must specify a SMTP server and domain to send email"
     exit
   end
-
 end
 
 result = process_urls(urls)
