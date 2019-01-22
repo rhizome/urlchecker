@@ -60,6 +60,7 @@ end
 @settings     = config["settings"].each_with_object({}) { |(k,v),memo| memo[k.to_sym] = v }
 urls          = config["urls"]
 @status_file  = @settings[:status_file] || './urlcheck.status'
+@user_agent   = @settings[:user_agent]  || 'https://www.github.com/rhizome'
 @markers      = options[:markers]       || @settings[:markers] || false
 @debug        = options[:debug]         || @settings[:debug]   || false
 @get_status   = options[:status]
@@ -75,7 +76,7 @@ def response_for(url, code)
   status = ''
   begin
     ret = Curl.get(URI.encode(url)) do |client|
-      client.headers['User-Agent'] = 'Many9s Monitor - urlchecker 0.2'
+      client.headers['User-Agent'] = "#{@user_agent} - urlchecker 0.2"
     end
     if ret.response_code && ret.response_code == code.to_i
       status = "OK"
