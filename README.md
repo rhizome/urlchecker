@@ -40,7 +40,7 @@ By default, no email is sent when checks are successful.
 Usage: urlcheck.rb [options]
 
     -c, --config_file FILE           Path to YAML config file
-    -m, --markers                    Send marker emails every hour
+    -m, --markers                    Send an email every hour even if successful 
     -s, --status                     Outputs OK or FAIL, does not send mail
     -d, --debug                      Always send mail
 
