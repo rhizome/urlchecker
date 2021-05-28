@@ -85,6 +85,9 @@ def response_for(url, code)
       status = "CODE_MISMATCH (got: #{ret.response_code} : want: #{code})"
       @dirty = true
     end
+  rescue Errno::ECONNREFUSED => e
+    status = "#{e}"
+    @dirty = true
   rescue Curl::Err::SSLPeerCertificateError => e
     if code.to_i == 000
       # 000 is Curl's "server's up, but not responding on SSL"
@@ -94,9 +97,6 @@ def response_for(url, code)
       status = "SSLFAIL"
       @dirty = true
     end
-  rescue Err::ECONNREFUSED => e
-    status = "#{e}"
-    @dirty = true
   rescue Curl::Err::HostResolutionError => e
     status = "#{e}"
     @dirty = true
