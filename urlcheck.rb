@@ -3,7 +3,7 @@
 #title           :urlcheck.rb
 #description     :check a list of urls
 #author          :eric@many9s.com
-#version         :0.2
+#version         :0.2.1
 #usage           :ruby urlcheck.rb
 #notes           :requires curl
 #==============================================================================
@@ -76,7 +76,7 @@ def response_for(url, code)
   status = ''
   begin
     ret = Curl.get(URI.encode(url)) do |client|
-      client.headers['User-Agent'] = "#{@user_agent} - urlchecker 0.2"
+      client.headers['User-Agent'] = "#{@user_agent} - urlchecker 0.2.1"
     end
     if ret.response_code && ret.response_code == code.to_i
       status = "OK"
