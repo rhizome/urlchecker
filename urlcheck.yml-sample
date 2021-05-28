@@ -8,7 +8,8 @@ settings:
   markers: false
   debug: false
 urls:
-  - url: "https://www.google.com"
-    code: 200
+  - url: "http://www.yahoo.com"
+    code: 301
   - url: "https://www.yahoo.com"
     code: 200
+  - [...]

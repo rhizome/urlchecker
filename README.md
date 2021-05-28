@@ -21,17 +21,18 @@ settings:
   markers: false
   debug: false
 urls:
-  - url: "https://www.google.com"
+  - url: "http://www.yahoo.com"
+    code: 301
+  - url: "https://www.yahoo.com"
     code: 200
-  - url: "https://www.yahoo.com",
-    code: 200
+  - [...]
 ```
 
 ### Cron job ###
 ```bash
 $ crontab -e 
 
-# */5 * * * * ${HOME}/bin/urlcheck.rb 
+# */5 * * * * /path/to/urlcheck.rb 
 ```
 
 ### Options ###
