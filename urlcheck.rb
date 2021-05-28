@@ -94,6 +94,9 @@ def response_for(url, code)
       status = "SSLFAIL"
       @dirty = true
     end
+  rescue Err::ECONNREFUSED => e
+    status = "#{e}"
+    @dirty = true
   rescue Curl::Err::HostResolutionError => e
     status = "#{e}"
     @dirty = true
