@@ -86,7 +86,7 @@ def response_for(url, code)
       @dirty = true
     end
   rescue Errno::ECONNREFUSED => e
-    status = "#{e}"
+    status = "SERVER DOWN"
     @dirty = true
   rescue Curl::Err::SSLPeerCertificateError => e
     if code.to_i == 000
