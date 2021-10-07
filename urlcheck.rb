@@ -75,7 +75,7 @@ end
 def response_for(url, code)
   status = ''
   begin
-    ret = Curl.get(URI.encode(url)) do |client|
+    ret = Curl.get(url) do |client|
       client.headers['User-Agent'] = "#{@user_agent} - urlchecker 0.2.1"
     end
     if ret.response_code && ret.response_code == code.to_i
